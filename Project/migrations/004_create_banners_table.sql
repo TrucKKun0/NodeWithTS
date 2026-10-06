@@ -5,6 +5,6 @@ CREATE TABLE banners(
     image_url TEXT NOT NULL,
     cloudinary_public_id TEXT NOT NULL,
 
-    created_at TIMESTAMP DEFAULT NOW(),
-    updated_at TIMESTAMP DEFAULT NOW()
+    created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMP NOT NULL DEFAULT NOW()
 )

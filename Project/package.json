@@ -4,9 +4,12 @@
   "description": "",
   "main": "dist/server.js",
   "scripts": {
-    "dev" : "tsx watch src/server.ts",
-    "build" : "tsc",
-    "start" : "node dist/server.js"
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "migrate" : "tsx src/scripts/migrate.ts",
+    "docker:up" : "docker compose up -d",
+    "docker:down" : "docker compose down"
   },
   "keywords": [],
   "author": "",
@@ -22,6 +25,7 @@
   },
   "dependencies": {
     "cors": "^2.8.6",
+    "pg": "^8.23.1",
     "pino": "^10.4.0",
     "pino-pretty": "^13.1.3"
   }
