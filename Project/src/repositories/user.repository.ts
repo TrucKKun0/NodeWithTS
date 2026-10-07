@@ -15,3 +15,10 @@ export async function createUser(email : string,password : string):Promise<User>
     );
     return result.rows[0];
 }
+
+export async function findUserByEmailWithPassword(email : string, password : string): Promise<DBUserWithPasswordRow>{
+    const result = await pool.query<DBUserWithPasswordRow>(
+        `SELECT id , email, role, passwordHash, created_at FROM users WHERE email = $1`,[email]
+    );
+    return result.rows[0]?? null;
+}

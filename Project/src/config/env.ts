@@ -15,5 +15,7 @@ export const env = {
     isProduction : (process.env.NODE_ENV ?? "development") === "production",
     nodeEnv : process.env.NODE_ENV ?? "development",
     loglevel : process.env.LOG_LEVEL ?? "info",
-    databaseurl : checkEnvVariables("DATABASE_URL")
+    databaseurl : checkEnvVariables("DATABASE_URL"),
+    jwtAccessSecret : checkEnvVariables("JWT_SECRET"),
+    jwtAccessExpiresIn : checkEnvVariables("JWT_ACCESS_EXPIRES_IN")
 } as const;
