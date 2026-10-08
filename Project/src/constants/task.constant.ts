@@ -1,0 +1,2 @@
+
+export const MAXIMUM_TITLE_LENGTH = 100;

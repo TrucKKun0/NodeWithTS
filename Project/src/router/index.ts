@@ -3,7 +3,9 @@
 import {Router} from "express";
 import { healthRouter } from "./health.routes";
 import { authRouter } from "./auth.routes";
+import { userTaskRouter } from "./user.task.route";
 
 export const apiRouter =  Router();
 apiRouter.use(healthRouter);
 apiRouter.use(authRouter);
+apiRouter.use("/task",userTaskRouter);
