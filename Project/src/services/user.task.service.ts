@@ -1,6 +1,6 @@
 import { MAXIMUM_TITLE_LENGTH } from "../constants/task.constant";
 import { AppError } from "../error/appError";
-import { allTasks, createTask, getUserTask, updateUserTask, userTasks } from "../repositories/user.task.repository";
+import { allTasks, createTask, deleteTask, getUserTask, updateUserTask, userTasks } from "../repositories/user.task.repository";
 import { Task } from "../types/task";
 
 
@@ -44,4 +44,11 @@ export async function updateTaskByUserId(taskId : string, userId : string,title 
         throw new AppError (404,"Task not found");
     }
     return updatedTask;
+}
+
+export async function deleteUserTask(taskId : string , userId : string):Promise<void>{
+    const deletedTask = await deleteTask(taskId,userId);
+    if (!deletedTask) {
+        throw new AppError(404,"Task not found");
+    }
 }

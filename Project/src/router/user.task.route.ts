@@ -1,7 +1,7 @@
 
 import { NextFunction, Request, Response, Router } from 'express';
 import { authenticate } from '../middleware/auth.middlerware';
-import { createUserTask, getAllTasks, getTaskUserById, getUserTasks, updateTaskByUserId } from '../services/user.task.service';
+import { createUserTask, deleteUserTask, getAllTasks, getTaskUserById, getUserTasks, updateTaskByUserId } from '../services/user.task.service';
 import { AppError } from '../error/appError';
 
 export const userTaskRouter = Router();
@@ -85,6 +85,24 @@ userTaskRouter.patch("/:taskId",authenticate,async(req: Request,res : Response,n
         return res.status(201).json({
             success : true,
             data : updatedTask
+        })
+    } catch (error) {
+        next(error);
+    }
+});
+
+userTaskRouter.delete("/:taskid", authenticate, async (req : Request, res : Response, next : NextFunction)=>{
+    try {
+        const taskId = String(req.params.taskid);
+        const userId = req.user?.userId;
+        if(!userId){
+            next(new AppError(403,"No access token provided."));
+            return;
+        }
+        await deleteUserTask(taskId,userId);
+        return res.status(200).json({
+            success : true,
+            message : "successfully deleted task."
         })
     } catch (error) {
         next(error);
