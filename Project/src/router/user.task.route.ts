@@ -1,7 +1,7 @@
 
 import { NextFunction, Request, Response, Router } from 'express';
 import { authenticate } from '../middleware/auth.middlerware';
-import { createUserTask, getAllTasks, getTaskUserById, getUserTasks } from '../services/user.task.service';
+import { createUserTask, getAllTasks, getTaskUserById, getUserTasks, updateTaskByUserId } from '../services/user.task.service';
 import { AppError } from '../error/appError';
 
 export const userTaskRouter = Router();
@@ -50,7 +50,7 @@ userTaskRouter.get('/me/',authenticate,async(req: Request,res: Response,next : N
     }
 })
 
-userTaskRouter.get('/:taskId',authenticate,async(req, res ,next)=>{
+userTaskRouter.get('/:taskId',authenticate,async(req: Request, res : Response ,next: NextFunction)=>{
     try {
         const taskId = String(req.params.taskId);
         
@@ -66,6 +66,26 @@ userTaskRouter.get('/:taskId',authenticate,async(req, res ,next)=>{
         })
 
         
+    } catch (error) {
+        next(error);
+    }
+});
+
+userTaskRouter.patch("/:taskId",authenticate,async(req: Request,res : Response,next : NextFunction)=>{
+    try {
+        const taskId = String(req.params.taskId);
+        const userId = req.user?.userId;
+        if(!userId){
+            next(new AppError(403,"No access token provided."));
+            return;
+        }
+        const title = req.body.title;
+
+        const updatedTask = await updateTaskByUserId(taskId,userId,title);
+        return res.status(201).json({
+            success : true,
+            data : updatedTask
+        })
     } catch (error) {
         next(error);
     }
