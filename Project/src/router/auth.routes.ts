@@ -1,4 +1,4 @@
-import Router from "express";
+import Router, { NextFunction } from "express";
 import { loginUser, registerUser } from "../services/auth.service";
 import { authenticate } from "../middleware/auth.middlerware";
 
@@ -37,3 +37,4 @@ authRouter.get("/me", authenticate,(req,res)=>{
         data : req.user
     })
 })
+

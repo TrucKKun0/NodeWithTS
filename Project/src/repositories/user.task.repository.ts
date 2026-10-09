@@ -16,3 +16,30 @@ export async function createTask(userId: string, title : string):Promise<Task>{
     )
     return result.rows[0];
 }
+
+export async function allTasks():Promise<Task[]>{
+    const result = await pool.query<TaskRow>(
+        `
+        SELECT id,title,status,user_id,created_at,updated_at FROM support_tasks
+        `
+    )
+    return result.rows;
+}
+
+export async function userTasks(userId : string):Promise<Task[]>{
+    const result = await pool.query<TaskRow>(
+        `
+        SELECT * FROM support_tasks 
+        WHERE user_id = $1
+        `,[userId]
+    );
+    return result.rows;
+}
+
+export async function getUserTask(taskId : string, userId : string): Promise<Task | null>{
+    const result = await pool.query<TaskRow>( 
+        `SELECT * FROM support_tasks 
+        WHERE id = $1 AND user_id = $2`,[taskId,userId]
+    );
+    return result.rows[0] ?? null;
+}
