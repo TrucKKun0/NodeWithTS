@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { authenticate } from '../middleware/auth.middlerware';
 import { requireAdmin } from '../middleware/admin.middleware';
-import { getAllTasks } from '../services/admin.task.service';
+import { getAllTasks, updateAdminTaskStatus } from '../services/admin.task.service';
 
 export const adminTaskRouter = Router();
 
@@ -15,6 +15,22 @@ adminTaskRouter.get('/',async(req,res,next)=>{
             data : {
                 allTasks
             }
+        })
+    } catch (error) {
+        next(error);
+    }
+});
+
+
+adminTaskRouter.patch("/:taskId/status",async(req,res,next)=>{
+    try {
+        const task = await updateAdminTaskStatus(
+            req.params.taskId,
+            req.body.status
+        )
+        return res.status(200).json({
+            success : true,
+            data:task
         })
     } catch (error) {
         next(error);

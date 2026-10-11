@@ -33,3 +33,13 @@ export async function findAllTasks(
         value);
         return result.rows;
 }
+
+export async function updateTaskStatus(taskId:string,status : string):Promise<Task | null> {
+    const result = await pool.query<TaskRow>(`
+        UPDATE support_tasks SET status = $1,updated_at = NOW()
+        WHERE id = $2
+        RETURNING id , title, status, created_at,updated_at
+        `,[status,taskId])
+
+        return result.rows[0] ?? null;
+}
