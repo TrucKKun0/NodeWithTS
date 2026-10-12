@@ -2,7 +2,7 @@ import Router, { NextFunction, Request, Response } from  "express";
 import { authenticate } from "../middleware/auth.middlerware";
 import { requireAdmin } from "../middleware/admin.middleware";
 import { uploadSingleBannerImage } from "../middleware/banner.middleware";
-import { creatAdminBannerService, fetchAllBanners } from "../services/admin.banner.service";
+import { creatAdminBannerService, deleteAdminBannerService, fetchAllBanners } from "../services/admin.banner.service";
 
 
 export const adminBannerRouter = Router();
@@ -33,6 +33,18 @@ adminBannerRouter.get("/",async(req:Request,res : Response, next : NextFunction)
             data : {banners}
         })
     } catch (error)  {
+        next(error);
+    }
+});
+
+adminBannerRouter.delete("/:bannerId",async(req , res , next ,)=>{
+    try {
+        await deleteAdminBannerService(req.params.bannerId);
+        return res.status(200).json({
+            success : true,
+            message : "successfully deleted banner."
+        })
+    } catch (error) {
         next(error);
     }
 })
