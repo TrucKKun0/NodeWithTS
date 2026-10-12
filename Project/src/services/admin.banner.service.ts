@@ -1,4 +1,5 @@
 import { AppError } from "../error/appError";
+import { clearBannerCache, getBannerFromCache, setBannerCache } from "../lib/bannerCache";
 import { uploadBannerImageToCloudinary } from "../lib/cloudinary";
 import { createAdminBanner, fetchAllAdminBanners } from "../repositories/admin.banner.repository";
 import { Banner } from "../types/banner";
@@ -23,13 +24,19 @@ export async function creatAdminBannerService(file:Express.Multer.File | undefin
     }
 
     const banner = await createAdminBanner(secureUrl,publicId);
+    await clearBannerCache();
     return banner;
 }
 
 export async function fetchAllBanners():Promise<Banner[]> {
+    const cacheBanners = await getBannerFromCache();
+    if(cacheBanners){
+        return cacheBanners;
+    }
     const banners = await fetchAllAdminBanners();
     if (!banners) {
         throw new AppError(404,"No banners found");
     }
+    await setBannerCache(banners); 
     return banners;
 }

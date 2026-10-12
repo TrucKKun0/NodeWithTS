@@ -32,7 +32,7 @@ adminBannerRouter.get("/",async(req:Request,res : Response, next : NextFunction)
             success : true,
             data : {banners}
         })
-    } catch (error) {
+    } catch (error)  {
         next(error);
     }
 })
