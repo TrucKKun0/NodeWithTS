@@ -1,5 +1,5 @@
 import Router, { NextFunction } from "express";
-import { loginUser, registerUser } from "../services/auth.service";
+import { loginUser, loginWithGoogle, registerUser, startGoogleLogin } from "../services/auth.service";
 import { authenticate } from "../middleware/auth.middlerware";
 
 export const authRouter = Router();
@@ -36,5 +36,23 @@ authRouter.get("/me", authenticate,(req,res)=>{
         success : true,
         data : req.user
     })
+});
+
+authRouter.get("/google",async(req,res)=>{
+    const googleAuthUrl = startGoogleLogin();
+    res.redirect(googleAuthUrl);
+});
+
+authRouter.get("/google/callback",async (req,res ,next)=>{
+    try {
+        const code  = req.query.code as string | undefined;
+        const {accessToken} = await loginWithGoogle(code ?? "");
+        res.status(200).json({
+            success : true,
+            data : accessToken
+        })
+    } catch (error) {
+        next(error)
+    }
 })
 

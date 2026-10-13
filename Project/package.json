@@ -10,7 +10,7 @@
     "migrate": "tsx src/scripts/migrate.ts",
     "docker:up": "docker compose up -d",
     "docker:down": "docker compose down",
-    "worker" : "tsx src/workers/deleteImageFromCLoudinary.ts"
+    "worker": "tsx src/workers/deleteImageFromCLoudinary.ts"
   },
   "keywords": [],
   "author": "",
@@ -32,6 +32,7 @@
     "bullmq": "^6.3.12",
     "cloudinary": "^2.11.0",
     "cors": "^2.8.6",
+    "google-auth-library": "^11.3.0",
     "ioredis": "^6.0.0",
     "jsonwebtoken": "^9.0.3",
     "multer": "^2.4.0",
